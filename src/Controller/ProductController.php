@@ -29,6 +29,7 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         $form->submit($request->toArray());
+        
 
         if($form->isSubmitted() && $form->isValid()){
             $entityManager->persist($product);
