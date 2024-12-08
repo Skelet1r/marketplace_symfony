@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Cart;
+use App\Entity\Product;
 use App\Form\CartType;
 use App\Repository\CartRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +36,22 @@ class CartController extends AbstractController
     }
     
     #[Route('/cart/newProduct/{id}', name: 'cart_new_product')]
-    public function newProduct(Request $request, EntityManagerInterface $entityManager){
+    public function newProduct(Request $request, EntityManagerInterface $entityManager, CartRepository $cartRepository, ProductRepository $productRepository, $id): JsonResponse{
+        
+        $cart = $entityManager->getRepository(Cart::class)->find($id);
 
+        $data = json_decode($request->getContent(), true);
+
+        $product = $entityManager->getRepository(Product::class)->find($data['productId']);
+
+        $cart->addProduct($product);
+    
+
+        $entityManager->persist($cart);
+        $entityManager->flush();
+
+        return $this->json([
+            'result' => 'Success!'
+        ]);
     }
 }
