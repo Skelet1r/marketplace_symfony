@@ -52,6 +52,7 @@ class ProductController extends AbstractController
 
     #[Route('product/edit/{id}', name: 'product_edit')]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): JsonResponse{
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         $form->submit($request->toArray());
@@ -71,6 +72,7 @@ class ProductController extends AbstractController
 
     #[Route('product/delete/{id}', name: 'product_delete')]
     public function delete(Request $request, EntityManagerInterface $entityManager, Product $product){
+        
         $entityManager->remove($product);
         $entityManager->flush();
 
