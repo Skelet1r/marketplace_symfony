@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ProductController extends AbstractController
 {
     #[Route('/product', name: 'product')]
-    public function index(Request $request, ProductRepository $productRepository, Product $product): JsonResponse
+    public function index(ProductRepository $productRepository): JsonResponse
     {
         $products = $productRepository->findAll();
 
@@ -76,4 +76,12 @@ class ProductController extends AbstractController
 
         return $this->json('Succesfully deleted!');
     }
+
+    #[Route('/product/search/{name}', name:'product_search')]
+    public function search(ProductRepository $productRepository, $name): JsonResponse{
+        $result = $productRepository->findBy(['name' => $name]);
+
+        return $this->json($result);
+    }
+
 }
