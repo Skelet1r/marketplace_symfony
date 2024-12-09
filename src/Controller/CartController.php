@@ -12,15 +12,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 class CartController extends AbstractController
 {
     #[Route('/cart', name: 'app_cart')]
-    public function index(CartRepository $cartRepository): JsonResponse
+    public function index(CartRepository $cartRepository, SerializerInterface $serializer, Cart $cart): JsonResponse
     {
-        $result = $cartRepository->findAll();
-        return $this->json($result);
+        $carts = $cartRepository->findAll();
+
+        $cartData = [];
+        
+        foreach ($carts as $cart) {
+            $productData = [];
+
+            foreach ($cart->getProduct() as $product) {
+                $productData[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'description' => $product->getDescription(),
+                    'price' => $product->getPrice(),
+                    'photo' => $product->getPhoto(),
+                ];
+            }
+            
+            $cartData[] = [
+                'id' => $cart->getId(),
+                'products' => $productData,
+            ];
+        }
+
+        return $this->json($cartData);
     }
 
     #[Route('/cart/new', name: 'cart_new')]

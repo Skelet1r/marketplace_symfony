@@ -15,30 +15,30 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['cart_read'])]
+    #[Groups(['product_read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['cart_read'])]
+    #[Groups(['product_read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['cart_read'])]
+    #[Groups(['product_read'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['cart_read'])]
+    #[Groups(['product_read'])]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['cart_read'])]
+    #[Groups(['product_read'])]
     private ?string $photo = null;
 
     /**
      * @var Collection<int, Cart>
      */
     #[ORM\ManyToMany(targetEntity: Cart::class, mappedBy: 'product')]
-    #[Groups(['cart_read'])]
+    #[Groups(['product_read'])]
     private Collection $cart;
 
     public function __construct()
