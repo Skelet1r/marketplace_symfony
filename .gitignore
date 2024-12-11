@@ -7,7 +7,9 @@
 /public/bundles/
 /var/
 /vendor/
-docker/
+docker/mysql/db/ib_buffer_pool
+docker/mysql/db/ibtmp1
+
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
